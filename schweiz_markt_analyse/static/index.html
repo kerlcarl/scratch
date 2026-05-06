@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schweiz Markt Analyse AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=5">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>SwissAI</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" id="nav-dashboard"><a href="#"><i class="fa-solid fa-house"></i> Schweiz</a></li>
+                <li id="nav-world"><a href="#"><i class="fa-solid fa-earth-americas"></i> Weltweit</a></li>
+                <li id="nav-portfolio"><a href="#"><i class="fa-solid fa-wallet"></i> Portfolio</a></li>
+                <li id="nav-news"><a href="#"><i class="fa-solid fa-newspaper"></i> Nachrichten</a></li>
+                <li id="nav-settings"><a href="#"><i class="fa-solid fa-gear"></i> Einstellungen</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Suche nach Ticker, Firma...">
+                </div>
+                <div class="user-profile">
+                    <div class="notifications">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="avatar">CK</div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <div class="welcome-section">
+                    <h1>Markt Übersicht Schweiz</h1>
+                    <p>KI-gestützte Analysen für den Schweizer Aktienmarkt.</p>
+                </div>
+
+                <!-- Market Cards Grid -->
+                <div class="market-grid" id="market-container">
+                    <!-- Loading State -->
+                    <div class="loading-card">
+                        <div class="spinner"></div>
+                        <p>Analysiere Marktdaten...</p>
+                    </div>
+                </div>
+
+                <!-- News Section -->
+                <div class="news-section">
+                    <div class="section-header">
+                        <h2>Neueste Marktnachrichten</h2>
+                        <a href="#" class="view-all">Alle anzeigen</a>
+                    </div>
+                    <div class="news-grid" id="news-container">
+                        <!-- News items will be injected here -->
+                        <div class="loading-news">
+                            <div class="spinner-small"></div>
+                            <span>Lade Nachrichten...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Section -->
+                <div class="portfolio-section" style="display: none;">
+                    <div class="portfolio-header">
+                        <div class="portfolio-balance-card">
+                            <h3>Verfügbares Guthaben</h3>
+                            <div class="balance-amount" id="portfolio-cash">10'000.00 CHF</div>
+                        </div>
+                        <div class="portfolio-balance-card">
+                            <h3>Portfolio-Wert</h3>
+                            <div class="balance-amount" id="portfolio-value">0.00 CHF</div>
+                        </div>
+                        <div class="portfolio-balance-card highlight-card">
+                            <h3>Gesamtwert</h3>
+                            <div class="balance-amount total-value" id="portfolio-total">10'000.00 CHF</div>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <h2>Meine Positionen</h2>
+                    </div>
+                    <div class="portfolio-grid" id="portfolio-container">
+                        <div class="empty-portfolio">Du hast noch keine Aktien gekauft.</div>
+                    </div>
+
+                    <!-- Transaction History -->
+                    <div class="section-header" style="margin-top: 2.5rem;">
+                        <h2>Transaktionsverlauf</h2>
+                        <button id="clear-history-btn" class="btn-clear-history" style="display:none;">
+                            <i class="fa-solid fa-trash-can"></i> Verlauf löschen
+                        </button>
+                    </div>
+                    <div class="history-table-wrapper">
+                        <table class="history-table" id="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Datum</th>
+                                    <th>Typ</th>
+                                    <th>Instrument</th>
+                                    <th class="text-right">Anzahl</th>
+                                    <th class="text-right">Kurs</th>
+                                    <th class="text-right">Betrag</th>
+                                    <th class="text-right">P&amp;L</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body">
+                                <tr>
+                                    <td colspan="7" class="history-empty">Noch keine Transaktionen.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="settings-section" style="display: none;">
+                    <div class="settings-welcome">
+                        <h1>Einstellungen</h1>
+                        <p>Verwalte deine Kursalarme und App-Einstellungen.</p>
+                    </div>
+
+                    <!-- Kursalarme -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-title">
+                                <i class="fa-solid fa-bell"></i>
+                                <h2>Kursbenachrichtigungen</h2>
+                            </div>
+                            <button id="request-notif-btn" class="btn-notif-perm" style="display:none;">
+                                <i class="fa-solid fa-bell-slash"></i> Browser-Benachrichtigungen aktivieren
+                            </button>
+                        </div>
+
+                        <div class="alert-form">
+                            <div class="alert-form-field">
+                                <label>Instrument</label>
+                                <select id="alert-instrument" class="settings-input">
+                                    <option value="">Bitte wählen…</option>
+                                    <option value="SMI">SMI</option>
+                                    <option value="Nestlé">Nestlé</option>
+                                    <option value="Novartis">Novartis</option>
+                                    <option value="Roche">Roche</option>
+                                    <option value="S&P 500">S&amp;P 500</option>
+                                    <option value="NASDAQ">NASDAQ</option>
+                                    <option value="DAX">DAX</option>
+                                    <option value="Nikkei 225">Nikkei 225</option>
+                                    <option value="FTSE 100">FTSE 100</option>
+                                </select>
+                            </div>
+                            <div class="alert-form-field">
+                                <label>Bedingung</label>
+                                <select id="alert-direction" class="settings-input">
+                                    <option value="above">Steigt über ↑</option>
+                                    <option value="below">Fällt unter ↓</option>
+                                </select>
+                            </div>
+                            <div class="alert-form-field">
+                                <label>Zielkurs</label>
+                                <input type="number" id="alert-price" class="settings-input" placeholder="0.00" step="0.01" min="0">
+                            </div>
+                            <div class="alert-form-field alert-form-action">
+                                <label>&nbsp;</label>
+                                <button id="add-alert-btn" class="btn-add-alert">
+                                    <i class="fa-solid fa-plus"></i> Alarm setzen
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="alerts-list" class="alerts-list">
+                            <div class="empty-alerts">
+                                <i class="fa-solid fa-bell-slash"></i>
+                                <span>Noch keine Alarme eingerichtet.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check-Intervall -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-title">
+                                <i class="fa-solid fa-clock"></i>
+                                <h2>Prüfintervall</h2>
+                            </div>
+                        </div>
+                        <div class="interval-row">
+                            <span class="interval-label">Kurse alle</span>
+                            <select id="check-interval" class="settings-input" style="width: auto;">
+                                <option value="60">1 Minute</option>
+                                <option value="300" selected>5 Minuten</option>
+                                <option value="600">10 Minuten</option>
+                                <option value="1800">30 Minuten</option>
+                            </select>
+                            <span class="interval-label">prüfen</span>
+                            <span class="interval-status" id="interval-status"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/script.js?v=5"></script>
+</body>
+
+</html>
