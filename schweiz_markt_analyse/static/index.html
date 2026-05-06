@@ -7,7 +7,7 @@
     <title>Schweiz Markt Analyse AI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=5">
+    <link rel="stylesheet" href="/static/style.css?v=6">
 </head>
 
 <body>
@@ -21,6 +21,7 @@
             <ul class="nav-links">
                 <li class="active" id="nav-dashboard"><a href="#"><i class="fa-solid fa-house"></i> Schweiz</a></li>
                 <li id="nav-world"><a href="#"><i class="fa-solid fa-earth-americas"></i> Weltweit</a></li>
+                <li id="nav-etf"><a href="#"><i class="fa-solid fa-layer-group"></i> ETFs</a></li>
                 <li id="nav-portfolio"><a href="#"><i class="fa-solid fa-wallet"></i> Portfolio</a></li>
                 <li id="nav-news"><a href="#"><i class="fa-solid fa-newspaper"></i> Nachrichten</a></li>
                 <li id="nav-settings"><a href="#"><i class="fa-solid fa-gear"></i> Einstellungen</a></li>
@@ -147,18 +148,9 @@
                         <div class="alert-form">
                             <div class="alert-form-field">
                                 <label>Instrument</label>
-                                <select id="alert-instrument" class="settings-input">
-                                    <option value="">Bitte wählen…</option>
-                                    <option value="SMI">SMI</option>
-                                    <option value="Nestlé">Nestlé</option>
-                                    <option value="Novartis">Novartis</option>
-                                    <option value="Roche">Roche</option>
-                                    <option value="S&P 500">S&amp;P 500</option>
-                                    <option value="NASDAQ">NASDAQ</option>
-                                    <option value="DAX">DAX</option>
-                                    <option value="Nikkei 225">Nikkei 225</option>
-                                    <option value="FTSE 100">FTSE 100</option>
-                                </select>
+                                <input type="text" id="alert-instrument" class="settings-input"
+                                       list="instrument-list" placeholder="Name eingeben…" autocomplete="off">
+                                <datalist id="instrument-list"></datalist>
                             </div>
                             <div class="alert-form-field">
                                 <label>Bedingung</label>
@@ -212,7 +204,7 @@
         </main>
     </div>
 
-    <script src="/static/script.js?v=5"></script>
+    <script src="/static/script.js?v=6"></script>
 </body>
 
 </html>

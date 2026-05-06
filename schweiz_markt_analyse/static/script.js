@@ -129,7 +129,7 @@ function showSections(visibleKeys) {
 // ── Navigation ──────────────────────────────────────────────────────────────
 
 function setupNavigation() {
-    const navIds = ['nav-dashboard', 'nav-world', 'nav-portfolio', 'nav-news', 'nav-settings'];
+    const navIds = ['nav-dashboard', 'nav-world', 'nav-etf', 'nav-portfolio', 'nav-news', 'nav-settings'];
 
     function setActive(id) {
         navIds.forEach(k => document.getElementById(k)?.classList.toggle('active', k === id));
@@ -141,6 +141,7 @@ function setupNavigation() {
         e.preventDefault();
         setActive('nav-dashboard');
         document.querySelector('.welcome-section h1').textContent = 'Markt Übersicht Schweiz';
+        document.querySelector('.welcome-section p').textContent = 'KI-Analyse der 20 grössten Schweizer Aktien (SMI).';
         showSections(['welcome', 'market', 'news']);
         fetchMarketData('/api/market');
     });
@@ -149,8 +150,18 @@ function setupNavigation() {
         e.preventDefault();
         setActive('nav-world');
         document.querySelector('.welcome-section h1').textContent = 'Markt Übersicht Weltweit';
+        document.querySelector('.welcome-section p').textContent = 'KI-Analyse der 20 grössten Unternehmen weltweit nach Marktkapitalisierung.';
         showSections(['welcome', 'market']);
         fetchMarketData('/api/market/world');
+    });
+
+    nav('nav-etf')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        setActive('nav-etf');
+        document.querySelector('.welcome-section h1').textContent = 'ETFs & Indexfonds';
+        document.querySelector('.welcome-section p').textContent = 'KI-Analyse der 20 grössten globalen ETFs und Indexfonds nach verwaltetem Vermögen (AUM).';
+        showSections(['welcome', 'market']);
+        fetchMarketData('/api/market/etf');
     });
 
     nav('nav-portfolio')?.addEventListener('click', (e) => {
@@ -174,10 +185,24 @@ function setupNavigation() {
     });
 }
 
+function updateInstrumentDatalist() {
+    const dl = document.getElementById('instrument-list');
+    if (!dl) return;
+    dl.innerHTML = '';
+    [...knownInstruments].sort().forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        dl.appendChild(opt);
+    });
+}
+
 // ── Market Data ─────────────────────────────────────────────────────────────
 
 // Last known prices: {instrument: currentPrice (number)}
 let lastMarketPrices = {};
+
+// All known instrument names (for datalist in Settings)
+const knownInstruments = new Set();
 
 async function fetchMarketData(url = '/api/market') {
     const container = document.getElementById('market-container');
@@ -190,11 +215,12 @@ async function fetchMarketData(url = '/api/market') {
 
         if (data.results && data.results.length > 0) {
             data.results.forEach((item, index) => {
-                // Store latest prices for alert checks
                 lastMarketPrices[item.instrument] = parseFloat(item.price);
+                knownInstruments.add(item.instrument);
                 container.appendChild(createMarketCard(item, index));
             });
-            checkAlerts(); // immediate check after fresh data
+            updateInstrumentDatalist();
+            checkAlerts();
         } else {
             container.innerHTML = '<div class="loading-card">Keine Daten verfügbar / API Fehler</div>';
         }
